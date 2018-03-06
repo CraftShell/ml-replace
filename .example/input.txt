@@ -1,0 +1,42 @@
+# Copyright (c) 2006, 2017, Oracle and/or its affiliates.
+# Copyright (c) 2011, 2017, MariaDB Corporation
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+# Really ugly, one script, "mysql_install_db", needs prefix set to ".",
+# i.e. makes access relative the current directory. This matches
+# the documentation, so better not change this.
+
+IF(INSTALL_LAYOUT MATCHES "STANDALONE")
+  SET(prefix ".")
+  SET(bindir ${prefix}/${INSTALL_BINDIR})
+  SET(sbindir ${prefix}/${INSTALL_SBINDIR})
+  SET(scriptdir ${prefix}/${INSTALL_BINDIR})
+  SET(libexecdir ${prefix}/${INSTALL_SBINDIR})
+  SET(pkgdatadir ${prefix}/${INSTALL_MYSQLSHAREDIR})
+  SET(localstatedir ${prefix}/data)
+ELSE()
+  SET(prefix "${CMAKE_INSTALL_PREFIX}")
+  SET(bindir ${INSTALL_BINDIRABS})
+  SET(sbindir ${INSTALL_SBINDIRABS})
+  SET(scriptdir ${INSTALL_BINDIRABS})
+  SET(libexecdir ${INSTALL_SBINDIRABS})
+  SET(pkgdatadir ${INSTALL_MYSQLSHAREDIRABS})
+  SET(localstatedir ${MYSQL_DATADIR})
+ENDIF()
+
+SET(resolveip_locations "$basedir/${INSTALL_BINDIR} $basedir/bin")
+SET(mysqld_locations "$basedir/${INSTALL_SBINDIR} $basedir/libexec $basedir/sbin $basedir/bin")
+SET(errmsg_locations "$basedir/${INSTALL_MYSQLSHAREDIR}/english $basedir/share/english $basedir/share/mysql/english")
+SET(pkgdata_locations "$basedir/${INSTALL_MYSQLSHAREDIR} $basedir/share $basedir/share/mysql")
